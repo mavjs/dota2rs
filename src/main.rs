@@ -1,9 +1,4 @@
-#[macro_use]
-extern crate serde;
-extern crate reqwest;
-extern crate serde_derive;
-
-use reqwest::Error;
+use serde_derive::Deserialize;
 
 #[derive(Deserialize, Debug)]
 struct Players {
@@ -23,7 +18,7 @@ struct Players {
 }
 
 #[derive(Deserialize, Debug)]
-struct API {
+struct Dota2Api {
     time_posted: i64,
     next_scheduled_post_time: i64,
     server_time: i64,
@@ -32,11 +27,10 @@ struct API {
 
 const URL: &str = "https://www.dota2.com/webapi/ILeaderboard/GetDivisionLeaderboard/v0001";
 
-fn main() -> Result<(), Error> {
+fn main() -> Result<(), Box<dyn std::error::Error>> {
     let europe = format!("{}?division={}", URL, "europe");
-    //println!("{}", europe);
-    let mut resp = reqwest::get(&europe)?;
-    let api: API = resp.json()?;
+    let resp = reqwest::blocking::get(europe)?;
+    let api: Dota2Api = resp.json()?;
     println!("{:?}", api);
     Ok(())
 }
