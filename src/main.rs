@@ -22,7 +22,7 @@ enum Commands {
         #[clap(arg_enum, value_parser)]
         division: Division,
 
-        // To show all player information from the leaderboard statistics
+        /// To show all player information from the leaderboard statistics
         #[clap(short, long, action)]
         showall: bool,
     },
